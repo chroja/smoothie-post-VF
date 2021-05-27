@@ -52,6 +52,20 @@ properties = {
     value: true,
     scope: "post"
   },
+  feedForArc: {
+    title: "Feed for arc",
+    description: "Maximum feed for arc - ",
+    type: "integer",
+    value: 500,
+    scope: "post"
+  },
+  IJfeedForArc: {
+    title: "Lenght for custom feed arc",
+    description: "Lenght for custom feed arc",
+    type: "integer",
+    value: 4,
+    scope: "post"
+  },
   showSequenceNumbers: {
     title: "Use sequence numbers",
     description: "Use sequence numbers for each block of outputted code.",
@@ -944,13 +958,19 @@ function onLinear5D(_x, _y, _z, _a, _b, _c, feed) {
 
 function onCircular(clockwise, cx, cy, cz, x, y, z, feed) {
   // one of X/Y and I/J are required and likewise
-  
+
   if (pendingRadiusCompensation >= 0) {
     error(localize("Radius compensation cannot be activated/deactivated for a circular move."));
     return;
   }
 
   var start = getCurrentPosition();
+  var feedForArc = getProperty("feedForArc");
+  var IJfeedForArc = getProperty("IJfeedForArc");
+
+  if ((feed >= feedForArc) && ((Math.abs(cx - start.x)<IJfeedForArc) || (Math.abs(cy - start.y)<IJfeedForArc))){
+    feed = feedForArc;
+  } 
 
   if (isFullCircle()) {
     if (isHelical()) {
