@@ -688,6 +688,7 @@ function onSection() {
     writeBlock(gPlaneModal.format(17));
 
     if (!machineConfiguration.isHeadConfiguration()) {
+      writeBlock(gMotionModal.format(0), zOutput.format(initialPosition.z), feedOutput.format(highFeedrate));
       writeBlock(
         gAbsIncModal.format(90),
         gMotionModal.format(0), xOutput.format(initialPosition.x), yOutput.format(initialPosition.y), feedOutput.format(highFeedrate)
